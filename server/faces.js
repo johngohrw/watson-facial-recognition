@@ -10,19 +10,19 @@ const visualRecognition = new VisualRecognitionV3({
 
 
 module.exports = {
-    vrRequest: (filePath) => {
-            const images_file = fs.createReadStream(filePath);
+    vrRequest: (filePath, callback) => {
+        const images_file = fs.createReadStream(filePath);
 
-            const params = {
-                  images_file: images_file
-            };
+        const params = {
+              images_file: images_file
+        };
 
-            visualRecognition.detectFaces(params, (err, response) => {
-                  if (err)
-                      console.log(err);
-                  else
-                      console.log(JSON.stringify(response, null, 2))
-            });
+        visualRecognition.detectFaces(params, (err, response) => {
+              if (err)
+                  console.log(err);
+              else
+                  callback(response);
+        });
     }
 }
 

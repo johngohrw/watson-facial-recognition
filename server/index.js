@@ -28,7 +28,9 @@ io.on('connection', (socket) => {
 	uploader.on('complete', (fileInfo) => {
 		console.log('Upload Complete.');
 		console.log(fileInfo);
-        faces.vrRequest(fileInfo.uploadDir);
+        faces.vrRequest(fileInfo.uploadDir, (response) => {
+            console.log(JSON.stringify(response, null, 2));
+        });
 	});
 	uploader.on('error', (err) => {
 		console.log('Error!', err);
