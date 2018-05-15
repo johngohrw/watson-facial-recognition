@@ -10,13 +10,18 @@ const text_to_speech = new TextToSpeechV1 ({
 
 const femaleUSVoice = "en-US_AllisonVoice";
 const kawaiiJPVoice = "ja-JP_EmiVoice"; // XD
-const params = {
-    text: 'Rengwu is a fucking bitch',
-    voice: kawaiiJPVoice,
-    accept: 'audio/wav'
-};
 
-// Pipe the synthesized text to a file.
-text_to_speech.synthesize(params).on('error', (error) => {
-    console.log('Error:', error);
-}).pipe(fs.createWriteStream('hello_world.wav'));
+module.exports = {
+    t2sRequest: (textStr, filePath = "audio.wav", format = "audio/wav") => {
+        const params = {
+            text: textStr,
+            voice: kawaiiJPVoice,
+            accept: format
+        };
+
+        // Pipe the synthesized text to a file.
+        text_to_speech.synthesize(params).on('error', (error) => {
+            console.log('Error:', error);
+        }).pipe(fs.createWriteStream(filePath));
+    }
+}
