@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>watson</title>
+    <link rel="stylesheet" href="/index.css">
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Codystar" rel="stylesheet">
+    <script src="popper.min.js"></script>
+    <script src="jquery-3.3.1.min.js"></script>
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <noscript>
+      You need to enable JavaScript to run this app.
+    </noscript>
+    <div id="root">
+        <div class="brand">
+            <h6 class="brand__subtitle">elementary, my dear ibm</h6>
+            <h1 class="brand__title">watson</h1>
+        </div>
+
+        <div id="container__main" class="container container__main">
+            <div class="container__uploader" id="container__uploader">
+                <form id="form-file-uploader">
+                    <input type="file" id="file"/>
+                    <input type="submit" value="Upload" />
+                </form>
+            </div>
+
+            <div class="container__uploading" id="container__uploading">
+                <div>
+                    <h1>uploading lol pls w8</h1>
+                    <div class="progress" id="upload-progress-container">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" id="upload-progress" role="progressbar"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container__uploaded" id="container__uploaded">
+                <div>
+                    <h1>uploaded yey</h1>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <script src="socket.io-file-client.js"></script>
+    <script src="socket.io.js"></script>
+    <script src="index.js"></script>
+  </body>
+</html>
