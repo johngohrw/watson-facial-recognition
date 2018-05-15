@@ -39,7 +39,6 @@ io.on('connection', (socket) => {
     });
 
 	uploader.on('complete', (fileInfo) => {
-        socket.emit('uploadComplete', fileInfo);
 		console.log('Upload Complete.');
         console.log('fileInfo: ', fileInfo);
 
@@ -60,6 +59,8 @@ io.on('connection', (socket) => {
             const text = `The number of faces is ${totalFaces}, the number of males is ${male} and the number of females is ${female}`;
             console.log(text);
             audio.t2sRequest(text);
+
+            socket.emit('watsonResponse');
         });
     });
 
