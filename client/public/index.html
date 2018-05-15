@@ -3,8 +3,9 @@
   <head>
     <meta charset="utf-8">
     <title>watson</title>
-    <link rel="stylesheet" href="index.css">
-    <link href="https://fonts.googleapis.com/css?family=Cookie" rel="stylesheet">
+    <link rel="stylesheet" href="/index.css">
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
   </head>
   <body>
     <noscript>
@@ -16,14 +17,21 @@
             <h1 class="brand__title">watson</h1>
         </div>
 
-        <div id="status-bar">welcome! nothing is happening so far..</div>
-
-        <div class="container-1">
-            Stuff is here
+        <div class="container">
+            <div id="status-bar">welcome! nothing is happening so far..</div>
         </div>
 
+        <div class="container">
+            <div class="container-1">
+                <form id="form-file-uploader">
+                    <input type="file" id="file" multiple />
+                    <input type="submit" value="Upload" />
+                </form>
+            </div>
+        </div>
 
     </div>
+    <script src="socket.io-file-client.js"></script>
     <script src="socket.io.js"></script>
     <script src="jquery-3.3.1.min.js"></script>
     <script src="index.js"></script>
