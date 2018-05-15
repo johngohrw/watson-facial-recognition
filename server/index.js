@@ -33,6 +33,12 @@ io.on('connection', (socket) => {
             console.log(JSON.stringify(response, null, 2));
             let totalFaces = numberOfFaces(response);
             let genderList = getGenderList(response);
+            let faceCoords = getFaceCoords(response)
+
+            socket.broadcast.emit('totalFaces', totalFaces) //emit integer
+            socket.broadcast.emit('genderList', genderList) //emit List
+            socket.broadcast.emit('faceCoords', faceCoords) //emit 2d array
+            
 
             console.log(genderList);
             let male = 0;
@@ -69,3 +75,34 @@ const getGenderList = (response) => {
     return glist;
 }
 
+
+const getFaceCoords = (response) => {
+
+    let totalFaces = numberOfFaces(response)
+    let dlist = [];
+    for (let i = 0; i < totalFaces; i++){
+        let thisDimension = response.images[0].faces[i].face_location
+        dlist.push(thisDimension)
+    };
+    
+    let coordList = []
+    let tempList = []
+
+    for (let j = 0; j < totalFaces; j++){
+
+        let i = dlist[j]
+
+        var xCoord = i.left
+        var yCoord = i.top
+
+        tempList.push({x: xCoord, y: yCoord})
+        tempList.push({x: xCoord+i.width, y: yCoord})
+        tempList.push({x: xCoord, y: yCoord+i.height})
+        tempList.push({x: xCoord+i.width, y: yCoord+i.height})
+
+        coordList.push(tempList)
+        tempList = []
+    }
+    console.log(dlist)
+    console.log(coordList)
+}
