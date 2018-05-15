@@ -30,6 +30,16 @@ io.on('connection', (socket) => {
 		console.log(fileInfo);
         faces.vrRequest(fileInfo.uploadDir, (response) => {
             console.log(JSON.stringify(response, null, 2));
+            var gender = []
+            var totalFaces = response.images[0].faces.length
+            console.log(totalFaces)
+            
+            for (let i = 0; i < totalFaces; i++){
+              let view = response.images[0].faces[i].gender.gender
+              console.log(view)
+              gender.push(view)
+              console.log(i)           
+            }
         });
 	});
 	uploader.on('error', (err) => {
