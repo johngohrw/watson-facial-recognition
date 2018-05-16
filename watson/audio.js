@@ -10,12 +10,14 @@ const text_to_speech = new TextToSpeechV1 ({
 
 const femaleUSVoice = "en-US_AllisonVoice";
 const kawaiiJPVoice = "ja-JP_EmiVoice"; // XD
+const brazilian = "pt-BR_IsabelaVoice";
+const deutsche = "de-DE_DieterVoice";
 
 module.exports = {
     t2sRequest: (textStr, filePath = "public/audio.wav", format = "audio/wav") => {
         const params = {
             text: textStr,
-            voice: kawaiiJPVoice,
+            voice: femaleUSVoice,
             accept: format
         };
 

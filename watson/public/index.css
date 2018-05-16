@@ -64,7 +64,8 @@ body {
 
 .container__uploader,
 .container__uploading,
-.container__uploaded {
+.container__uploaded,
+#player {
     display: none;
 }
 

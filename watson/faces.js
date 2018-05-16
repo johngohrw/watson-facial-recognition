@@ -8,7 +8,6 @@ const visualRecognition = new VisualRecognitionV3({
     api_key: keyVal
 });
 
-
 module.exports = {
     vrRequest: (filePath, callback) => {
         const images_file = fs.createReadStream(filePath);

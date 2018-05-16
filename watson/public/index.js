@@ -6,6 +6,7 @@ var uploaderContainer = document.getElementById('container__uploader');
 var uploadingContainer = document.getElementById('container__uploading');
 var uploadedContainer = document.getElementById('container__uploaded');
 var resetButton = document.getElementById('button-reset');
+var audioPlayer = document.getElementById('player');
 
 uploader.on('start', function(fileInfo) {
 	console.log('Start uploading', fileInfo);
@@ -54,13 +55,6 @@ socket.on('connect', () => {
 
 socket.on('watsonResponse', (response) => {
 	console.log('watson\'s response is here.');
-	
-	// container transitions
-	$('.upload-message').text('uploading lol pls w8');
-	$('.container__uploading').css("display", "none");
-	$('.container__uploaded').css("display", "flex");
-	$('#upload-progress').removeClass('bg-success');
-	$('#upload-progress').css("width", 0)
 
 	// set image
 	let fileDir = response.fileDir.slice(5)
@@ -80,6 +74,20 @@ socket.on('watsonResponse', (response) => {
 			$('.uploaded-image').append(drawBox(boundWidth, boundHeight, obj, response.dimensions, i+1));
 		})
 	}, 100);
+
+	setTimeout(() => {
+		// container transitions
+		$('.upload-message').text('uploading lol pls w8');
+		$('#upload-progress').removeClass('bg-success');
+		$('#upload-progress').css("width", 0);
+		$('.container__uploading').css("display", "none");
+		$('.container__uploaded').css("display", "flex");
+
+		// $('#player').css('display', 'block');
+		audioPlayer.src = 'audio.wav?cb=' + new Date().getTime();
+		audioPlayer.load();
+		audioPlayer.play();
+	}, 5000);
 });
 
 socket.on('streamProgress', (progressVal, completeVal) => {
@@ -107,6 +115,7 @@ const resetContainers = () => {
 	$('.container__uploader').css("display", "block");
 	$('.container__uploading').css("display", "none");
 	$('.container__uploaded').css("display", "none");	
+	$('#player').css('display', 'none');
 }
 
 const drawBox = (boundWidth, boundHeight, obj, dimensions, i) => {
