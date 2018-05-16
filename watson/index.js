@@ -50,7 +50,8 @@ io.on('connection', (socket) => {
             console.log(JSON.stringify(response, null, 2));
             let totalFaces = functions.numberOfFaces(response);
             let genderList = functions.getGenderList(response, totalFaces);
-            let faceCoords = functions.getFaceCoords(response, totalFaces)
+            let faceCoords = functions.getFaceCoords(response, totalFaces);
+            let avgAge = functions.getAverageAge(response, totalFaces);
 
             console.log(genderList);
             let male = 0;
@@ -60,7 +61,7 @@ io.on('connection', (socket) => {
             console.log(text);
             audio.t2sRequest(text);
 
-            let responseToClient = {'fileDir': fileInfo.uploadDir,'totalFaces': totalFaces, 'genderList': genderList, 'faceCoords': faceCoords, 'dimensions': imageDimensions};
+            let responseToClient = {'fileDir': fileInfo.uploadDir,'totalFaces': totalFaces, 'genderList': genderList, 'faceCoords': faceCoords, 'dimensions': imageDimensions, 'averageAge': avgAge};
 
             socket.emit('watsonResponse', responseToClient);
         });
@@ -74,4 +75,3 @@ io.on('connection', (socket) => {
 		console.log('Aborted: ', fileInfo);
     });
 });
-
