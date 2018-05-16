@@ -6,9 +6,8 @@ module.exports = {
     },
 
     // check genders in image
-    getGenderList: (response) => {
+    getGenderList: (response, totalFaces) => {
         let glist = [];
-        let totalFaces = numberOfFaces(response);
         for (let i = 0; i < totalFaces; i++){
             let thisGender = response.images[0].faces[i].gender.gender
             glist.push(thisGender)
@@ -16,9 +15,8 @@ module.exports = {
         return glist;
     },
 
-    getFaceCoords: (response) => {
+    getFaceCoords: (response, totalFaces) => {
 
-        let totalFaces = numberOfFaces(response)
         let dList = [];
         for (let i = 0; i < totalFaces; i++){
             let thisDimension = response.images[0].faces[i].face_location
@@ -43,8 +41,6 @@ module.exports = {
             coordList.push(tempList)
             tempList = []
         }
-        // console.log('dList: ', dList)
-        // console.log('coordList: ', coordList)
         return dList;
     }
 }

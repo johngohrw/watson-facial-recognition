@@ -66,22 +66,21 @@ socket.on('watsonResponse', (response) => {
 	let females = response.genderList.filter(obj => obj=== 'FEMALE').length;
 
 	setTimeout(() => {
-		$('.watson-info').text(`there are ${response.totalFaces} faces in this image, with ${males} male faces and ${females} female faces.`)
-		response.faceCoords.forEach((obj, i) => {
-			console.log('facecoords: ', obj, i);
-			let boundWidth = $('.uploaded-image').width();
-			let boundHeight = $('.uploaded-image').height();
-			$('.uploaded-image').append(drawBox(boundWidth, boundHeight, obj, response.dimensions, i+1));
-		})
-	}, 100);
-
-	setTimeout(() => {
 		// container transitions
 		$('.upload-message').text('uploading lol pls w8');
 		$('#upload-progress').removeClass('bg-success');
 		$('#upload-progress').css("width", 0);
 		$('.container__uploading').css("display", "none");
 		$('.container__uploaded').css("display", "flex");
+
+		$('.watson-info').text(`there are ${response.totalFaces} faces in this image, with ${males} male faces and ${females} female faces.`)
+		response.faceCoords.forEach((obj, i) => {
+			console.log('facecoords: ', obj, i);
+			let boundWidth = $('.uploaded-image').width();
+			let boundHeight = $('.uploaded-image').height();
+			console.log('aaaaa', boundWidth, boundHeight);
+			$('.uploaded-image').append(drawBox(boundWidth, boundHeight, obj, response.dimensions, i+1));
+		})
 
 		// $('#player').css('display', 'block');
 		audioPlayer.src = 'audio.wav?cb=' + new Date().getTime();
@@ -126,5 +125,8 @@ const drawBox = (boundWidth, boundHeight, obj, dimensions, i) => {
 	let y = Math.floor((obj.top / imgHeight) * boundHeight);
 	let w = Math.floor((obj.width / imgWidth) * boundWidth);
 	let h = Math.floor((obj.height / imgHeight) * boundHeight);
-	return `<div class="face-box" style="top: ${y}px; left: ${x}px; width: ${w}px; height: ${h}px"></div>`
+
+	var result = `<div class="face-box" style="top: ${y}px; left: ${x}px; width: ${w}px; height: ${h}px"></div>` 
+	console.log(result)
+	return result;
 }

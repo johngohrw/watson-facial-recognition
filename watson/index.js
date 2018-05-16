@@ -49,8 +49,8 @@ io.on('connection', (socket) => {
         faces.vrRequest(fileInfo.uploadDir, (response) => {
             console.log(JSON.stringify(response, null, 2));
             let totalFaces = functions.numberOfFaces(response);
-            let genderList = functions.getGenderList(response);
-            let faceCoords = functions.getFaceCoords(response)
+            let genderList = functions.getGenderList(response, totalFaces);
+            let faceCoords = functions.getFaceCoords(response, totalFaces)
 
             console.log(genderList);
             let male = 0;
