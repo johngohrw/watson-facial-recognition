@@ -73,7 +73,7 @@ socket.on('watsonResponse', (response) => {
 		$('.container__uploading').css("display", "none");
 		$('.container__uploaded').css("display", "flex");
 
-		$('.watson-info').text(`there are ${response.totalFaces} faces in this image, with ${males} male faces and ${females} female faces.`)
+		$('.watson-info').text(`there are ${response.totalFaces} faces in this image, with ${males} male faces and ${females} female faces. the average age of the faces are ${response.averageAge}`)
 		response.faceCoords.forEach((obj, i) => {
 			console.log('facecoords: ', obj, i);
 			let boundWidth = $('.uploaded-image').width();

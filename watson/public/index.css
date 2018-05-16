@@ -84,6 +84,10 @@ body {
 
 .face-box {
     position: absolute;
-    border: 1px dotted black;
-    outline: 1px dotted white;
+    border: 2px dotted black;
+    outline: 2px dotted white;
+}
+
+.watson-info {
+    text-align: center;
 }
