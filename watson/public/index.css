@@ -67,3 +67,22 @@ body {
 .container__uploaded {
     display: none;
 }
+
+.container__uploaded {
+    flex-flow: column nowrap;
+    align-items: center;
+}
+
+.uploaded-image {
+    position: relative;
+}
+
+.the-actual-image {
+    width: 500px;
+}
+
+.face-box {
+    position: absolute;
+    border: 1px dotted black;
+    outline: 1px dotted white;
+}

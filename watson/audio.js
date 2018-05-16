@@ -12,7 +12,7 @@ const femaleUSVoice = "en-US_AllisonVoice";
 const kawaiiJPVoice = "ja-JP_EmiVoice"; // XD
 
 module.exports = {
-    t2sRequest: (textStr, filePath = "audio.wav", format = "audio/wav") => {
+    t2sRequest: (textStr, filePath = "public/audio.wav", format = "audio/wav") => {
         const params = {
             text: textStr,
             voice: kawaiiJPVoice,

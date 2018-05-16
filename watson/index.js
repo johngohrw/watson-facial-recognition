@@ -8,10 +8,12 @@ app.listen(port, () => {
 });
 
 app.use(express.static('public'));  // serving 'public' folder
+app.use(express.static('data'));  // serving 'data' folder
 
 // server code below
 const io = require('socket.io').listen(8000);
 const SocketIOFile = require('socket.io-file');
+const sizeOf = require('image-size');
 
 const faces = require('./faces.js');
 const audio = require('./audio.js');
@@ -41,26 +43,25 @@ io.on('connection', (socket) => {
 	uploader.on('complete', (fileInfo) => {
 		console.log('Upload Complete.');
         console.log('fileInfo: ', fileInfo);
+        var imageDimensions = sizeOf(fileInfo.uploadDir);
 
         faces.vrRequest(fileInfo.uploadDir, (response) => {
             console.log(JSON.stringify(response, null, 2));
             let totalFaces = numberOfFaces(response);
             let genderList = getGenderList(response);
             let faceCoords = getFaceCoords(response)
-
-            socket.broadcast.emit('totalFaces', totalFaces) //emit integer
-            socket.broadcast.emit('genderList', genderList) //emit List
-            socket.broadcast.emit('faceCoords', faceCoords) //emit 2d array
             
             console.log(genderList);
             let male = 0;
             let female = 0;
             genderList.map((current) => (current === "MALE") ? male++ : female++);
-            const text = `The number of faces is ${totalFaces}, the number of males is ${male} and the number of females is ${female}`;
+            const text = `there are ${totalFaces} faces in this image, with ${male} male faces and ${female} faces.`;
             console.log(text);
             audio.t2sRequest(text);
 
-            socket.emit('watsonResponse');
+            let responseToClient = {'fileDir': fileInfo.uploadDir,'totalFaces': totalFaces, 'genderList': genderList, 'faceCoords': faceCoords, 'dimensions': imageDimensions};
+
+            socket.emit('watsonResponse', responseToClient);
         });
     });
 
@@ -93,10 +94,10 @@ const getGenderList = (response) => {
 const getFaceCoords = (response) => {
 
     let totalFaces = numberOfFaces(response)
-    let dlist = [];
+    let dList = [];
     for (let i = 0; i < totalFaces; i++){
         let thisDimension = response.images[0].faces[i].face_location
-        dlist.push(thisDimension)
+        dList.push(thisDimension)
     };
     
     let coordList = []
@@ -104,7 +105,7 @@ const getFaceCoords = (response) => {
 
     for (let j = 0; j < totalFaces; j++){
 
-        let i = dlist[j]
+        let i = dList[j]
 
         var xCoord = i.left
         var yCoord = i.top
@@ -117,6 +118,7 @@ const getFaceCoords = (response) => {
         coordList.push(tempList)
         tempList = []
     }
-    console.log('dlist: ', dlist)
-    console.log('coodList: ', coordList)
+    // console.log('dList: ', dList)
+    // console.log('coordList: ', coordList)
+    return dList;
 }
