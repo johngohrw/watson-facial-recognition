@@ -19,5 +19,8 @@
     "socketio": "^1.0.0",
     "socketio-file-upload": "^0.6.0",
     "watson-developer-cloud": "^3.4.1"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2"
   }
 }
