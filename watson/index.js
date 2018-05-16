@@ -17,6 +17,7 @@ const sizeOf = require('image-size');
 
 const faces = require('./faces.js');
 const audio = require('./audio.js');
+const functions = require('./functions.js');
 
 io.on('connection', (socket) => {
     console.log('A client has connected');
@@ -47,10 +48,10 @@ io.on('connection', (socket) => {
 
         faces.vrRequest(fileInfo.uploadDir, (response) => {
             console.log(JSON.stringify(response, null, 2));
-            let totalFaces = numberOfFaces(response);
-            let genderList = getGenderList(response);
-            let faceCoords = getFaceCoords(response)
-            
+            let totalFaces = functions.numberOfFaces(response);
+            let genderList = functions.getGenderList(response);
+            let faceCoords = functions.getFaceCoords(response)
+
             console.log(genderList);
             let male = 0;
             let female = 0;
@@ -74,51 +75,3 @@ io.on('connection', (socket) => {
     });
 });
 
-// count number of faces
-const numberOfFaces = (response) => {
-    return response.images[0].faces.length;
-}
-
-// check genders in image
-const getGenderList = (response) => {
-    let glist = [];
-    let totalFaces = numberOfFaces(response);
-    for (let i = 0; i < totalFaces; i++){
-        let thisGender = response.images[0].faces[i].gender.gender
-        glist.push(thisGender)
-    };
-    return glist;
-}
-
-
-const getFaceCoords = (response) => {
-
-    let totalFaces = numberOfFaces(response)
-    let dList = [];
-    for (let i = 0; i < totalFaces; i++){
-        let thisDimension = response.images[0].faces[i].face_location
-        dList.push(thisDimension)
-    };
-    
-    let coordList = []
-    let tempList = []
-
-    for (let j = 0; j < totalFaces; j++){
-
-        let i = dList[j]
-
-        var xCoord = i.left
-        var yCoord = i.top
-
-        tempList.push({x: xCoord, y: yCoord})
-        tempList.push({x: xCoord+i.width, y: yCoord})
-        tempList.push({x: xCoord, y: yCoord+i.height})
-        tempList.push({x: xCoord+i.width, y: yCoord+i.height})
-
-        coordList.push(tempList)
-        tempList = []
-    }
-    // console.log('dList: ', dList)
-    // console.log('coordList: ', coordList)
-    return dList;
-}
