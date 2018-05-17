@@ -45,29 +45,33 @@ module.exports = {
     },
 
     getAverageAge: (response, totalFaces) => {
-        let ageList = [];
-        for (let i = 0; i < totalFaces; i++){
-            let thisAge = response.images[0].faces[i].age
-            ageList.push(thisAge)
-        };
+        if (totalFaces === 0)
+            return 0;
+        else {
+            let ageList = [];
+            for (let i = 0; i < totalFaces; i++){
+                let thisAge = response.images[0].faces[i].age
+                ageList.push(thisAge)
+            };
 
-        let avgAgeList = []
+            let avgAgeList = []
 
-        for (let j = 0; j < totalFaces; j++){
+            for (let j = 0; j < totalFaces; j++){
 
-            let i = ageList[j]
+                let i = ageList[j]
 
-            var minAge = i.min
-            var maxAge = i.max
-            var avg = ((maxAge - minAge) / 2) + minAge
+                var minAge = i.min
+                var maxAge = i.max
+                var avg = ((maxAge - minAge) / 2) + minAge
 
-            avgAgeList.push(avg)
+                avgAgeList.push(avg)
+            }
+
+            var sum = avgAgeList.reduce((a, b) => a + b, 0)
+            var finalAvgAge = sum/totalFaces
+
+            return(finalAvgAge)
         }
-
-        var sum = avgAgeList.reduce((a, b) => a + b, 0)
-        var finalAvgAge = sum/totalFaces
-
-        return(finalAvgAge)
     }
 
 }
