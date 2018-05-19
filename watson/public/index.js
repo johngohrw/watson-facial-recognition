@@ -30,6 +30,7 @@ socket.on('watsonResponse', (response) => {
 
 	// Set image source on <img> element
 	let fileDir = response.fileDir.slice(5)
+	$('.uploaded-image__original').html(`<img class="the-actual-image" src="${fileDir}"/>`)
 	$('.uploaded-image').html(`<img class="the-actual-image" src="${fileDir}"/>`)
 	
 	// Getting lists of male and female faces

@@ -58,7 +58,7 @@ body {
     background-color: white;
     border: 1px solid #c7c7c7;
     border-radius: 10px;
-    margin: 10px;
+    margin: 20px;
     padding: 10px;
 }
 
@@ -72,7 +72,24 @@ body {
 .container__uploaded {
     flex-flow: column nowrap;
     align-items: center;
+    width: 100%;
 }
+
+
+.uploaded-images {
+    display: flex;
+    flex-flow: row wrap;
+    width: 100%;
+    justify-content: center;
+}
+
+.image-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 5px;
+}
+
 
 .uploaded-image {
     position: relative;
@@ -80,6 +97,7 @@ body {
 
 .the-actual-image {
     width: 500px;
+    border: 1px solid #bfbfbf;
 }
 
 .face-box {
@@ -89,7 +107,10 @@ body {
 }
 
 .watson-info {
-    max-width: 500px;
     margin: 10px;
     text-align: center;
+}
+
+#button-reset {
+    margin: 20px;
 }

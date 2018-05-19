@@ -30,7 +30,7 @@
 
             <div class="container__uploading" id="container__uploading">
                 <div>
-                    <h1 class="upload-message"></h1>
+                    <h3 class="upload-message"></h3>
                     <div class="progress" id="upload-progress-container">
                         <div class="progress-bar progress-bar-striped progress-bar-animated" id="upload-progress" role="progressbar"></div>
                     </div>
@@ -39,9 +39,18 @@
 
             <div class="container__uploaded" id="container__uploaded">
                     <h1>Results</h1>
-                    <div class="uploaded-image"></div>
+                    <div class="uploaded-images">
+                        <div class="image-container">
+                            <div class="uploaded-image__original"></div>
+                            <h3>input</h3>
+                        </div>
+                        <div class="image-container">
+                            <div class="uploaded-image"></div>
+                            <h4>output</h4>
+                        </div>
+                    </div>
                     <div class="watson-info">info here</div>
-                    <button id="button-reset">do it again</button>
+                    <button id="button-reset">Do it again!</button>
             </div>
 
             <audio id="player" controls autoplay>
