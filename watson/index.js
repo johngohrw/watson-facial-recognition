@@ -31,7 +31,7 @@ io.on('connection', (socket) => {
 		overwrite: true 							        // overwrite file if exists, default is true.
     });
 
-	uploader.on('start', (fileInfo) => {                
+	uploader.on('start', (fileInfo) => {
 		console.log('Start uploading');                     //log the start of the upload process
 		console.log(fileInfo);
     });
@@ -58,14 +58,14 @@ io.on('connection', (socket) => {
             let female = 0;
             genderList.map((current) => (current === "MALE") ? male++ : female++);  //counts the total male and female genders
 
+            let text = `There are ${totalFaces} faces in this image, with ${male} male faces and ${female} female faces.`; // message sent to client of total male and total female detected
+
             if (totalFaces === 0){
-                const text = `There are no faces detected in this image.`;  // message sent to the client if there is no faces detected
-            } else {
-                const text = `There are ${totalFaces} faces in this image, with ${male} male faces and ${female} female faces.`; // message sent to client of total male and total female detected
+                text = `There are no faces detected in this image.`;  // message sent to the client if there is no faces detected
             }
             console.log(text);
             audio.t2sRequest(text);
-            
+
             //json file containing all the necessary information to be passed back to the client
             let responseToClient = {'fileDir': fileInfo.uploadDir,'totalFaces': totalFaces, 'genderList': genderList, 'faceCoords': faceCoords, 'dimensions': imageDimensions, 'averageAge': avgAge};
 
