@@ -32,7 +32,7 @@ socket.on('watsonResponse', (response) => {
 	let fileDir = response.fileDir.slice(5)
 	$('.uploaded-image__original').html(`<img class="the-actual-image" src="${fileDir}"/>`)
 	$('.uploaded-image').html(`<img class="the-actual-image" src="${fileDir}"/>`)
-	
+
 	// Getting lists of male and female faces
 	let males = response.genderList.filter(obj => obj=== 'MALE').length;
 	let females = response.genderList.filter(obj => obj=== 'FEMALE').length;
@@ -46,13 +46,13 @@ socket.on('watsonResponse', (response) => {
 		$('.container__uploading').css("display", "none");
 		$('.container__uploaded').css("display", "flex");
 
-		if (response.averageAge === null) {
+		if (response.averageAge === 0) {
 			$('.watson-info').html(`There are no faces detected in this image :(`);
 		} else {
 			$('.watson-info').html(`There are ${response.totalFaces} faces in this image, with ${males} male faces and ${females} female faces.<br>
 									The average age of the faces are ${response.averageAge}.`);
 		}
-		
+
 
 		// Drawing face-boxes for every face
 		response.faceCoords.forEach((obj, i) => {
@@ -146,7 +146,7 @@ const resetContainers = () => {
 	console.log('Resetting containers to initial state!');
 	$('.container__uploader').css("display", "block");
 	$('.container__uploading').css("display", "none");
-	$('.container__uploaded').css("display", "none");	
+	$('.container__uploaded').css("display", "none");
 	$('#player').css('display', 'none');
 }
 
@@ -158,6 +158,6 @@ const drawBox = (boundWidth, boundHeight, obj, dimensions, i) => {
 	let y = Math.floor((obj.top / imgHeight) * boundHeight);
 	let w = Math.floor((obj.width / imgWidth) * boundWidth);
 	let h = Math.floor((obj.height / imgHeight) * boundHeight);
-	var result = `<div class="face-box" style="top: ${y}px; left: ${x}px; width: ${w}px; height: ${h}px"></div>` 
+	var result = `<div class="face-box" style="top: ${y}px; left: ${x}px; width: ${w}px; height: ${h}px"></div>`
 	return result;
 }
