@@ -11,7 +11,7 @@ describe("VisualRecognition", function () {
         function (done) {
             this.timeout(networkTimeout);
             const filePath = "./test_images/test1.jpg";
-            faces.vrRequest(filePath, (response) => {
+            faces.vrRequest(filePath, (err) => {}, (response) => {
                 const totalfaces = functions.numberOfFaces(response);
                 expect(totalfaces).to.equal(5);
                 done();
@@ -23,7 +23,7 @@ describe("VisualRecognition", function () {
         function (done) {
             this.timeout(networkTimeout);
             const filePath = "./test_images/test2.jpg";
-            faces.vrRequest(filePath, (response) => {
+            faces.vrRequest(filePath, (err) => {}, (response) => {
                 const totalfaces = functions.numberOfFaces(response);
                 expect(totalfaces).to.equal(0);
                 done();
@@ -35,7 +35,7 @@ describe("VisualRecognition", function () {
         function (done) {
             this.timeout(networkTimeout);
             const filePath = "./test_images/test1.jpg";
-            faces.vrRequest(filePath, (response) => {
+            faces.vrRequest(filePath, (err) => {}, (response) => {
                 const totalfaces = functions.numberOfFaces(response);
                 const averageAge = functions.getAverageAge(response, totalfaces);
                 expect(averageAge).to.be.within(20, 30);
@@ -48,7 +48,7 @@ describe("VisualRecognition", function () {
         function (done) {
             this.timeout(networkTimeout);
             const filePath = "./test_images/test2.jpg";
-            faces.vrRequest(filePath, (response) => {
+            faces.vrRequest(filePath, (err) => {}, (response) => {
                 const totalfaces = functions.numberOfFaces(response);
                 const averageAge = functions.getAverageAge(response, totalfaces);
                 expect(averageAge).to.equal(0);
