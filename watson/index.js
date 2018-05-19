@@ -57,7 +57,12 @@ io.on('connection', (socket) => {
             let male = 0;
             let female = 0;
             genderList.map((current) => (current === "MALE") ? male++ : female++);
-            const text = `There are ${totalFaces} faces in this image, with ${male} male faces and ${female} female faces.`;
+
+            if (totalFaces === 0){
+                const text = `There are no faces detected in this image.`;
+            } else {
+                const text = `There are ${totalFaces} faces in this image, with ${male} male faces and ${female} female faces.`;
+            }
             console.log(text);
             audio.t2sRequest(text);
 
