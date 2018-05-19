@@ -31,41 +31,42 @@ io.on('connection', (socket) => {
 		overwrite: true 							        // overwrite file if exists, default is true.
     });
 
-	uploader.on('start', (fileInfo) => {
-		console.log('Start uploading');
+	uploader.on('start', (fileInfo) => {                
+		console.log('Start uploading');                     //log the start of the upload process
 		console.log(fileInfo);
     });
 
 	uploader.on('stream', (fileInfo) => {
-        console.log(`${fileInfo.wrote} / ${fileInfo.size} byte(s)`);
+        console.log(`${fileInfo.wrote} / ${fileInfo.size} byte(s)`); // //log the current state of the upload process
         socket.emit('streamProgress', fileInfo.wrote, fileInfo.size);
     });
 
 	uploader.on('complete', (fileInfo) => {
-		console.log('Upload Complete.');
+		console.log('Upload Complete.');                            //log upon completion of the upload process
         console.log('fileInfo: ', fileInfo);
         var imageDimensions = sizeOf(fileInfo.uploadDir);
 
         faces.vrRequest(fileInfo.uploadDir, (response) => {
             console.log(JSON.stringify(response, null, 2));
-            let totalFaces = functions.numberOfFaces(response);
-            let genderList = functions.getGenderList(response, totalFaces);
-            let faceCoords = functions.getFaceCoords(response, totalFaces);
-            let avgAge = functions.getAverageAge(response, totalFaces);
+            let totalFaces = functions.numberOfFaces(response);                 // returns the total faces in the picture
+            let genderList = functions.getGenderList(response, totalFaces);     // returns a list of all the genders in the picture
+            let faceCoords = functions.getFaceCoords(response, totalFaces);     // returns each of the coordinates of each of the faces detected
+            let avgAge = functions.getAverageAge(response, totalFaces);         // returns the average age of the faces detected
 
             console.log(genderList);
             let male = 0;
             let female = 0;
-            genderList.map((current) => (current === "MALE") ? male++ : female++);
+            genderList.map((current) => (current === "MALE") ? male++ : female++);  //counts the total male and female genders
 
             if (totalFaces === 0){
-                const text = `There are no faces detected in this image.`;
+                const text = `There are no faces detected in this image.`;  // message sent to the client if there is no faces detected
             } else {
-                const text = `There are ${totalFaces} faces in this image, with ${male} male faces and ${female} female faces.`;
+                const text = `There are ${totalFaces} faces in this image, with ${male} male faces and ${female} female faces.`; // message sent to client of total male and total female detected
             }
             console.log(text);
             audio.t2sRequest(text);
-
+            
+            //json file containing all the necessary information to be passed back to the client
             let responseToClient = {'fileDir': fileInfo.uploadDir,'totalFaces': totalFaces, 'genderList': genderList, 'faceCoords': faceCoords, 'dimensions': imageDimensions, 'averageAge': avgAge};
 
             socket.emit('watsonResponse', responseToClient);
