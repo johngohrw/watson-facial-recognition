@@ -46,7 +46,13 @@ socket.on('watsonResponse', (response) => {
 		$('.container__uploading').css("display", "none");
 		$('.container__uploaded').css("display", "flex");
 
-		$('.watson-info').text(`There are ${response.totalFaces} faces in this image, with ${males} male faces and ${females} female faces. the average age of the faces are ${response.averageAge}`)
+		if (response.averageAge === null) {
+			$('.watson-info').html(`There are no faces detected in this image :(`);
+		} else {
+			$('.watson-info').html(`There are ${response.totalFaces} faces in this image, with ${males} male faces and ${females} female faces.<br>
+									The average age of the faces are ${response.averageAge}.`);
+		}
+		
 
 		// Drawing face-boxes for every face
 		response.faceCoords.forEach((obj, i) => {
