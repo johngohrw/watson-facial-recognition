@@ -1,11 +1,11 @@
 
 module.exports = {
-    // count number of faces
+    // returns the total number of faces detected in the given picture
     numberOfFaces: (response) => {
         return response.images[0].faces.length;
     },
 
-    // check genders in image
+    // returns a list of all the genders of each faces in the given picture
     getGenderList: (response, totalFaces) => {
         let glist = [];
         for (let i = 0; i < totalFaces; i++){
@@ -15,6 +15,7 @@ module.exports = {
         return glist;
     },
 
+    // returns the coordinates of the faces detected in the given picture
     getFaceCoords: (response, totalFaces) => {
 
         let dList = [];
@@ -44,6 +45,7 @@ module.exports = {
         return dList;
     },
 
+    // returns the average age of all the faces detected in the given picture
     getAverageAge: (response, totalFaces) => {
         if (totalFaces === 0)
             return 0;
