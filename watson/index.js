@@ -83,30 +83,33 @@ io.on('connection', (socket) => {
         logger.debug('fileInfo: ', fileInfo);
         var imageDimensions = sizeOf(fileInfo.uploadDir);
 
-        faces.vrRequest(fileInfo.uploadDir, (response) => {
-            logger.verbose(JSON.stringify(response, null, 2));
-            let totalFaces = functions.numberOfFaces(response);                 // returns the total faces in the picture
-            let genderList = functions.getGenderList(response, totalFaces);     // returns a list of all the genders in the picture
-            let faceCoords = functions.getFaceCoords(response, totalFaces);     // returns each of the coordinates of each of the faces detected
-            let avgAge = functions.getAverageAge(response, totalFaces);         // returns the average age of the faces detected
+        faces.vrRequest(fileInfo.uploadDir,
+            (err) => logger.error(err),
+            (response) => {
+                logger.verbose(JSON.stringify(response, null, 2));
+                let totalFaces = functions.numberOfFaces(response);                 // returns the total faces in the picture
+                let genderList = functions.getGenderList(response, totalFaces);     // returns a list of all the genders in the picture
+                let faceCoords = functions.getFaceCoords(response, totalFaces);     // returns each of the coordinates of each of the faces detected
+                let avgAge = functions.getAverageAge(response, totalFaces);         // returns the average age of the faces detected
 
-            logger.debug(genderList);
-            let male = 0;
-            let female = 0;
-            genderList.map((current) => (current === "MALE") ? male++ : female++);  //counts the total male and female genders
+                logger.debug(genderList);
+                let male = 0;
+                let female = 0;
+                genderList.map((current) => (current === "MALE") ? male++ : female++);  //counts the total male and female genders
 
-            let text = `There are ${totalFaces} faces in this image, with ${male} male faces and ${female} female faces.`; // message sent to client of total male and total female detected
+                let text = `There are ${totalFaces} faces in this image, with ${male} male faces and ${female} female faces.`; // message sent to client of total male and total female detected
 
-            if (totalFaces === 0){
-                text = `There are no faces detected in this image.`;  // message sent to the client if there is no faces detected
-            }
-            logger.debug(text);
-            audio.t2sRequest(text);
+                if (totalFaces === 0){
+                    text = `There are no faces detected in this image.`;  // message sent to the client if there is no faces detected
+                }
+                logger.debug(text);
+                audio.t2sRequest(text, (err) => logger.error(err));
 
-            //json file containing all the necessary information to be passed back to the client
-            let responseToClient = {'fileDir': fileInfo.uploadDir,'totalFaces': totalFaces, 'genderList': genderList, 'faceCoords': faceCoords, 'dimensions': imageDimensions, 'averageAge': avgAge};
+                //json file containing all the necessary information to be passed back to the client
+                let responseToClient = {'fileDir': fileInfo.uploadDir,'totalFaces': totalFaces, 'genderList': genderList, 'faceCoords': faceCoords, 'dimensions': imageDimensions, 'averageAge': avgAge};
 
-            socket.emit('watsonResponse', responseToClient);
+                logger.info("Giving data back to client");
+                socket.emit('watsonResponse', responseToClient);
         });
     });
 

@@ -14,7 +14,7 @@ const brazilian = "pt-BR_IsabelaVoice";
 const deutsche = "de-DE_DieterVoice";
 
 module.exports = {
-    t2sRequest: (textStr, filePath = "public/audio.wav", format = "audio/wav") => {
+    t2sRequest: (textStr, errCallback, filePath = "public/audio.wav", format = "audio/wav") => {
         const params = {
             text: textStr,
             voice: femaleUSVoice,
@@ -22,8 +22,6 @@ module.exports = {
         };
 
         // Pipe the synthesized text to a file.
-        text_to_speech.synthesize(params).on('error', (error) => {
-            console.log('Error:', error);
-        }).pipe(fs.createWriteStream(filePath));
+        text_to_speech.synthesize(params).on('error', errCallback).pipe(fs.createWriteStream(filePath));
     }
 }
