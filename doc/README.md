@@ -5,6 +5,11 @@
 
 The product of this project is a client-server based web application that is able to detect and classify faces from an image with the help of cloud computing service providers. Using IBM Cloud Watson's visual recognition and text-to-speech synthesis service packages, this application uploads an input image to the server, and then relevant synthesised information about the image will be returned to the client. The information will also be read out loud with a text-to-speech-engine-generated voiceover audio.
 
+## How to launch 
+
+`npm install`
+
+`npm run pro`
 
 ## Release implementations
 
