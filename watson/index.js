@@ -84,7 +84,12 @@ io.on('connection', (socket) => {
         var imageDimensions = sizeOf(fileInfo.uploadDir);
 
         faces.vrRequest(fileInfo.uploadDir,
-            (err) => logger.error(err),
+            (err) => {
+                logger.error(err)
+                let responseToClient = {'fileDir': fileInfo.uploadDir,'totalFaces': null, 'genderList': null, 'faceCoords': null, 'dimensions': imageDimensions, 'averageAge': null};
+                logger.info("Giving data back to client");
+                socket.emit('watsonResponse', responseToClient);
+            },
             (response) => {
                 logger.verbose(JSON.stringify(response, null, 2));
                 let totalFaces = functions.numberOfFaces(response);                 // returns the total faces in the picture

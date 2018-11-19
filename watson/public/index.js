@@ -28,46 +28,61 @@ socket.on('connect', () => {
 socket.on('watsonResponse', (response) => {
 	console.log('Watson\'s response is here.');
 
+
+
 	// Set image source on <img> element
 	let fileDir = response.fileDir.slice(5)
 	$('.uploaded-image__original').html(`<img class="the-actual-image" src="${fileDir}"/>`)
 	$('.uploaded-image').html(`<img class="the-actual-image" src="${fileDir}"/>`)
 
-	// Getting lists of male and female faces
-	let males = response.genderList.filter(obj => obj=== 'MALE').length;
-	let females = response.genderList.filter(obj => obj=== 'FEMALE').length;
-
-	// allowing a 5 second grace period for the text-to-speech synthesis to update
-	setTimeout(() => {
+	if (response.totalFaces === null) {
 		// Container transitions. Changing the visibility of the div containers to simulate transition.
 		$('.upload-message').text('uploading lol pls w8');
 		$('#upload-progress').removeClass('bg-success');
 		$('#upload-progress').css("width", 0);
 		$('.container__uploading').css("display", "none");
 		$('.container__uploaded').css("display", "flex");
+		$('.watson-info').html(`Can't connect to Watson :(`);
 
-		if (response.averageAge === 0) {
-			$('.watson-info').html(`There are no faces detected in this image :(`);
-		} else {
-			$('.watson-info').html(`There are ${response.totalFaces} faces in this image, with ${males} male faces and ${females} female faces.<br>
-									The average age of the faces are ${response.averageAge}.`);
-		}
+	} else {
+
+		// Getting lists of male and female faces
+		let males = response.genderList.filter(obj => obj=== 'MALE').length;
+		let females = response.genderList.filter(obj => obj=== 'FEMALE').length;
+
+		// allowing a 5 second grace period for the text-to-speech synthesis to update
+		setTimeout(() => {
+			// Container transitions. Changing the visibility of the div containers to simulate transition.
+			$('.upload-message').text('uploading lol pls w8');
+			$('#upload-progress').removeClass('bg-success');
+			$('#upload-progress').css("width", 0);
+			$('.container__uploading').css("display", "none");
+			$('.container__uploaded').css("display", "flex");
+
+			if (response.averageAge === 0) {
+				$('.watson-info').html(`There are no faces detected in this image :(`);
+			} else {
+				$('.watson-info').html(`There are ${response.totalFaces} faces in this image, with ${males} male faces and ${females} female faces.<br>
+										The average age of the faces are ${response.averageAge}.`);
+			}
 
 
-		// Drawing face-boxes for every face
-		response.faceCoords.forEach((obj, i) => {
-			let dims = response.dimensions;
-			let boundWidth = $('.uploaded-image').width();
-			let boundHeight = $('.uploaded-image').height();
-			console.log(`Drawing a ${obj.width}x${obj.height} box on (${obj.left}, ${obj.top})`);
-			$('.uploaded-image').append(drawBox(boundWidth, boundHeight, obj, dims, i+1));
-		})
+			// Drawing face-boxes for every face
+			response.faceCoords.forEach((obj, i) => {
+				let dims = response.dimensions;
+				let boundWidth = $('.uploaded-image').width();
+				let boundHeight = $('.uploaded-image').height();
+				console.log(`Drawing a ${obj.width}x${obj.height} box on (${obj.left}, ${obj.top})`);
+				$('.uploaded-image').append(drawBox(boundWidth, boundHeight, obj, dims, i+1));
+			})
 
-		// reloading the latest updated wav audio text-to-speech file.
-		audioPlayer.src = 'audio.wav?cb=' + new Date().getTime();
-		audioPlayer.load();
-		audioPlayer.play();
-	}, 5000);
+			// reloading the latest updated wav audio text-to-speech file.
+			audioPlayer.src = 'audio.wav?cb=' + new Date().getTime();
+			audioPlayer.load();
+			audioPlayer.play();
+		}, 5000);
+	}
+
 });
 
 socket.on('streamProgress', (progressVal, completeVal) => {
