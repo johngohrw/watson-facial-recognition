@@ -1,5 +1,6 @@
 # Facial Recognition and Text to Speech Synthesis
 A web app developed for a school project. 
+
 ![alt-text](https://imgur.com/FuNd5hR.jpg "just the uploader!")
 
 ## Overview of the project
